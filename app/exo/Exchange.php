@@ -2,14 +2,6 @@
 
 namespace Exo;
 
-//require_once 'Autoloader.php';
-
-//use Exo\User;
-//use Exo\Autoloader;
-//use Exo\EmailSender;
-
-//Autoloader::register();
-
 class Exchange
 {
     private $owner;
@@ -93,17 +85,16 @@ class Exchange
     public function save($receiver, $product, $owner, $startDate, $endDate)
     {
         $ret = $receiver->isValid() && $product->isValid() && $owner->isUserInProductAndValid() && $this->areValidDates($startDate, $endDate);
-        if($ret && $receiver->getAge() < 18) {
-            $myEmailSender = new EmailSender();
-            $myEmailSender->sendEmail($receiver->getEmail(), 'Vous êtes mineur');
-            $this->setEmailSender($receiver->getEmail());
-        }
+
         if($ret){
+            $myEmailSender = new EmailSender();
+            $myEmailSender->sendEmail($receiver->getEmail(), 'Vous êtes mineur', $receiver->getAge());
             $this->setReceiver($receiver);
             $this->setProduct($product);
             $this->setOwner($owner);
             $this->setStartDate($startDate);
             $this->setEndDate($endDate);
+            $this->setEmailSender($receiver->getEmail());
 
             $myDb = new DatabaseConnection();
             $myDb->saveExchange($this);

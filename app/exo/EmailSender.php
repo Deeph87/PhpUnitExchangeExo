@@ -10,9 +10,12 @@ class EmailSender
 		//
 	}
 
-	public function sendEmail($emailReceiver, $messageContent)
+	public function sendEmail($emailReceiver, $messageContent, $age)
 	{
+	    if($age < 18)
 		    return true;
+
+	    return false;
 	}
 
 }

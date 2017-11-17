@@ -6,7 +6,7 @@
  * Time: 16:29
  */
 
-require '../Autoloader.php';
+require 'Autoloader.php';
 
 use PHPUnit\Framework\TestCase;
 use Exo\Autoloader;
@@ -23,7 +23,7 @@ class ExchangeTest extends TestCase
     {
 //        Instantiate Exchange class
         $exchange = new Exchange();
-//        $emailSender = new EmailSender();
+        $emailSender = new EmailSender();
 
 //        Params
         $startDate = '12/11/2017';
@@ -31,7 +31,7 @@ class ExchangeTest extends TestCase
 
 //        Set-up mocks
         $receiver = $this->getMockBuilder(User::class)
-            ->setMethods(['isValid', 'getAge'])
+            ->setMethods(['isValid'])
             ->getMock();
 
         $product = $this->getMockBuilder(Product::class)
@@ -49,12 +49,6 @@ class ExchangeTest extends TestCase
                 $this->returnValue(true)
             );
 
-        $receiver->expects($this->once())
-            ->method('getAge')
-            ->will(
-                $this->returnValue(12)
-            );
-
         $product->expects($this->once())
             ->method('isValid')
             ->will(
@@ -69,11 +63,16 @@ class ExchangeTest extends TestCase
 
         $this->assertTrue($exchange->areValidDates($startDate, $endDate));
 
-//        if($receiver->getAge() < 18) {
-//            $this->assertTrue($emailSender->sendEmail('jojo@jaja.fr', 'yohoo', $receiver->getAge()));
-//        } else {
-//            $this->assertFalse($emailSender->sendEmail('jojo@jaja.fr', 'yohoo', $receiver->getAge()));
-//        }
+
+        $age = 18;
+        $emailReceiver = 'jojo@jaja.fr';
+        $message = 'Coucou';
+
+        if($age < 18){
+            $this->assertTrue($emailSender->sendEmail($emailReceiver, $message, $age));
+        } else {
+            $this->assertFalse($emailSender->sendEmail($emailReceiver, $message, $age));
+        }
 
         $exchange->save($receiver, $product, $owner, $startDate, $endDate);
     }
