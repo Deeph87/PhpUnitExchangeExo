@@ -1,3 +1,14 @@
-var/logs
-var/mariadb
 .idea
+var
+docker
+vendor
+composer.json
+composer.lock
+Calculatrice.php
+CalculatriceTest.php
+index.php
+Observer.php
+Subject.php
+SubjectTest.php
+UserTest.php
+docker-compose.yml
